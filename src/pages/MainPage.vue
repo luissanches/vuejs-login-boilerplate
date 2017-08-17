@@ -28,10 +28,10 @@
     
         <div slot="left">
             <!--
-                    Use <q-side-link> component 
-                    instead of <q-item> for 
-                    internal vue-router navigation
-                  -->
+                                Use <q-side-link> component 
+                                instead of <q-item> for 
+                                internal vue-router navigation
+                              -->
     
             <q-list no-border link inset-delimiter>
                 <q-list-header>Essential Links</q-list-header>
@@ -93,7 +93,14 @@ export default {
             this.$router.push({ name: routeName })
         }
     },
-    mounted() {
+    beforeMount() {
+        // TODO: implements server authentication
+        let currentBearerUser = localStorage.getItem('bearerauth')
+        if (currentBearerUser) {
+            this.$router.replace({ name: 'main' })
+        } else {
+            this.$router.replace({ name: 'login' })
+        }
     },
     beforeDestroy() {
     }
