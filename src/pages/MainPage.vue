@@ -9,7 +9,7 @@
                 <div slot="subtitle">Running on Quasar v{{$q.version}}</div>
             </q-toolbar-title>
             <q-btn flat>
-                Olá, LUISSANCHES
+                Olá, {{currentLogin.login}}
                 <q-popover ref="popover2">
                     <q-list link style="min-width: 100px">
                         <q-item @click="$refs.popover2.close()">
@@ -64,6 +64,7 @@ import {
     QItemMain,
     QPopover
 } from 'quasar'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'index',
@@ -84,6 +85,7 @@ export default {
         return {}
     },
     computed: {
+        ...mapGetters({currentLogin: 'login/getCurrentLogin'})
     },
     methods: {
         onLogout() {

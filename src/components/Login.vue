@@ -13,7 +13,7 @@
                         <q-input v-model="password" color="cyan" float-label="Password" type="password" class="col-12" />
                     </div>
                 </q-card-main>
-    
+
                 <q-card-actions class="row justify-end">
                     <q-toggle color="cyan" v-model="remember_password" label="Remember Password" />
                     <q-btn color="cyan" big icon="assignment_ind" @click="onLogin()" class="login-button">
@@ -37,8 +37,11 @@ import {
     QIcon,
     QField,
     QTooltip,
-    QPopover
+    QPopover,
+    Toast
 } from 'quasar'
+import { mapMutations } from 'vuex'
+import { LOGIN } from '../store/mutations-types'
 
 export default {
     name: 'login',
@@ -55,24 +58,34 @@ export default {
         QIcon,
         QField,
         QTooltip,
-        QPopover
+        QPopover,
+        Toast
     },
     methods: {
         onLogin() {
             // TODO: Remove and implements server authentication
-            let compareUserBase64 = this.$utils.fn.toBase64('luissanches@123')
+            let compareUserBase64 = this.$utils.encode.toBase64('admin@123')
             if (this.login.length > 0 && this.password.length > 0) {
-                let userBase64 = this.$utils.fn.toBase64(`${this.login}@${this.password}`)
+                let userBase64 = this.$utils.encode.toBase64(`${this.login}@${this.password}`)
                 if (compareUserBase64 === userBase64) {
                     if (this.remember_password) {
                         localStorage.setItem('bearerauth', userBase64)
                     } else {
                         localStorage.removeItem('bearerauth')
                     }
+
+                    let payload = { login: this.login, password: this.password, name: 'admin', role: 'admin' }
+                    // call without action because checkIn dont needs asyncronous
+                    this.checkIn(payload)
                     this.$router.replace({ name: 'main' })
+                } else {
+                    Toast.create.negative({ html: 'Usuário ou Senha Inválidos' })
                 }
             }
-        }
+        },
+        ...mapMutations({
+            checkIn: `login/${LOGIN.CHECK_IN}` // map this.checkIn()` to `this.$store.commit(`login/${LOGIN.CHECK_IN}`, payload)`
+        })
     },
     data() {
         return {

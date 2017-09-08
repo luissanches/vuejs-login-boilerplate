@@ -28,6 +28,8 @@ module.exports = {
     'space-before-function-paren': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'brace-style': 0
+    'brace-style': 0,
+    'spaced-comment': 0,
+    'eol-las': 0
   }
 }
